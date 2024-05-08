@@ -1,0 +1,141 @@
+/* temp */
+@import url('https://fonts.googleapis.com/css2?family=Boogaloo&family=Montserrat:ital,wght@1,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Boogaloo&family=Inter:wght@400;500;600;700&display=swap');
+#list {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+  /*  Set the spacing between multiple lines, only multiple*/
+  align-content: center;
+	/* row wrap */
+	flex-flow:row wrap;
+	width: 80%;
+	height: 520px;
+/* 	background-color: red; */
+}
+
+.item {
+  display: flex;
+  align-items: center;
+	justify-content: start;
+	width: 50%;
+	height: 80px;
+  margin-bottom: 17px;
+/* 	background-color: purple; */
+}
+
+.input2 {
+  display: flex;
+  align-items: center;
+	width: 75%;
+  height: 60%;  
+/*   set dashed line */
+/* 	border-style: dashed; */
+  border-radius: 10px;
+  padding-left: 6%;  
+  border: 0.2px solid #a9a9a9;
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+}
+
+.deleteButton {
+  margin-left: 25px;
+	color: rgba(238, 29, 82, 0.8);
+	font-size: 64px;
+	background-color: white;
+  font-family: 'Boogaloo', sans-serif;
+}
+
+#titleOfList {
+  display:flex;
+  justify-content: center;
+	font-family: 'Inter', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  width:100%;
+}
+
+#playButton {
+  background-color: rgba(238, 29, 82, 0.8);
+}
+
+@media screen and (min-width:700px) and (max-width:900px) {
+  #list {
+    margin-top: 40px;
+    flex-direction: column; 
+    height: 750px;
+    justify-content: flex-start;
+    width: 90%;
+/*     background-color: red; */
+  }
+  .input2 {
+    width: 60%;  
+  }
+  .item {
+    display:flex;
+    justify-content: center;
+    margin-left: 45px;
+/*     justify-content: flex-end; */
+    width: 100%;
+/*     background-color: purple; */
+/*     margin-top: 10px; */
+    margin-bottom: 7px;
+  }
+  .deleteButton {
+    font-family: Boogaloo 
+    font-size: 60px;
+  }
+  #titleOfList {
+    font-size: 24px;
+/*     background-color: yellow; */
+  }
+  #header {
+    display: flex;
+  }
+  #gap {
+    order: 1;
+    flex:1;
+  }
+  #logo {
+    order: 2;
+    flex:1;
+  }
+  #myVideos {
+    order: 3;
+    flex:1;
+  }
+}
+
+@media screen and (max-width:700px) {
+  #list {
+    flex-direction: column;  
+    justify-content: flex-start;
+    margin-top: 15px;
+    height: 450px;
+    width: 77%;
+  }
+  .item {
+    justify-content: flex-end;
+    width: 90%;
+    height: 37px;
+/*     background-color: purple; */
+  }
+  #titleOfList {
+    margin-top: 40px;
+    margin-bottom: 20px;    
+    font-size: 18px;
+  }
+  .input2 {
+/*     width: 80%; */
+    height: 30px;
+  }
+  .deleteButton {
+    font-size: 44px;
+    margin-left: 15px;
+  }
+  #addNewVideos, #playButton {
+    height: 53px;
+    width: 135px;
+    border-radius: 18px;
+  }
+}

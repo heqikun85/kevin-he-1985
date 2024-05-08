@@ -1,0 +1,47 @@
+<!-- 
+class: ecs-162
+date : 04/20/2022 
+team : Evan Zhou, Qikun He, Bill Chen
+-->
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>homework 2</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" 
+        href="https://ecs-162-spring-2022.profamenta.repl.co/reset.css" />
+		<link rel="stylesheet" type="text/css" href="layout.css"/>
+		<script defer="defer" type="text/javascript" src="buttons.js"></script>
+	</head>
+	<body>
+		<main>
+      <!--header section-->
+			<div id="header">
+				<span id="gap"></span>
+				<span id="logo">TikTok Pets</span>
+				<div id="myVideos">
+					<button class="button" id="videosButton" type="button">My videos</button>
+				</div>
+			</div>
+			<!--content section-->
+			<div class="shadow" id="content">
+				<div id="title">Submit a video:</div>
+				<div id="inputArea">
+					<label for="userName" class="subTitle">Username:</label>
+					<input type="text" name="username" class="input" id="userName" placeholder="awesometiktokuser123" />
+					<label for="URL" class="subTitle">Tiktok URL:</label>
+					<input type="text" name="URL" class="input" id="URL" placeholder="http://tiktok.com/12345" />
+					<label for="nickName" class="subTitle">Video nickname:</label>
+					<input type="text" name="nickName" class="input" id="nickName" placeholder="Bob the supercat" />
+				</div>
+			</div>
+			<!--footer section-->
+			<div id="footer">
+				<button class="footerright" id="continueButton" type="button">Continue</button>
+			</div>	
+      
+		</main>
+	</body>
+</html>
