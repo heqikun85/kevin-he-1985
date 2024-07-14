@@ -1,0 +1,17 @@
+class Prism : public Triangle
+{
+	const double height;
+	
+	public:
+	Prism(const vector<string>&);
+	Prism& operator=(const Prism&);
+	void output(ostream&) const;
+};
+
+void Prism::output(ostream& out) const
+{
+	out << roundingOff << "PRISM side=" << side;
+	out << " height=" << height;
+	out << roundingTwo << " surface area=" << sqrt(3.0) / 4 * pow(side, 2.0) * 2 + side * height * 3 << " volume=" << sqrt(3.0) / 4 * pow(side, 2.0) * height << endl;
+}
+
