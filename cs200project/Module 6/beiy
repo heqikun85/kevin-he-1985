@@ -1,0 +1,261 @@
+// Programmer: Minjoo Kim
+// Programmer's ID: 1581736
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include <set>
+using namespace std;
+
+#include <cstring>
+
+class Leg{
+	friend class Route;
+	friend class ShortestRoute;
+	
+	const char* const startCity;
+	const char* const endCity;
+	double const dist;
+	
+public:
+	Leg(const char* const s, const char* const e, double d) : startCity(s), endCity(e), dist(d){}
+	double getDist() const {return dist;}
+	Leg& operator=(const Leg&);
+	void niceOutput(ostream&) const;
+};
+
+class Route{
+	friend class ShortestRoute;
+	vector<const Leg*> legs;
+	double const dist;
+	
+public:
+	Route(const Leg&);
+	Route(const Route&, const Leg&);
+	double getDistance() const {return dist;}
+	void niceOutput(ostream&) const;
+	Route& operator=(const Route&);
+	friend bool operator<(const Route&, const Route&);
+};
+
+class ShortestRoute{
+	static const Leg allLags[];
+public:
+	static Route anyRoute(const char* const, const char* const);
+	static const Route shortestRoute(const char* const, const char* const);
+};
+const Leg ShortestRoute::allLags[] = {
+	Leg("San Francisco","Sacramento",87.9),
+	Leg("San Francisco","San Jose",48.3),
+	Leg("San Francisco","Los Angeles",342),
+	Leg("Los Angeles","Las Vegas",270),
+	Leg("Los Angeles","Albuquerque",789),
+	Leg("Albuquerque","Santa Fe",64.3),
+	Leg("Albuquerque","Denver",447),
+	Leg("Santa Fe","Amarillo",280),
+	Leg("Amarillo","Oklahoma City",260),
+	Leg("Oklahoma City","Memphis",466),
+	Leg("Memphis","Nashville",212),
+	Leg("Nashville","Knoxville",180),
+	Leg("Knoxville","Winston-Salem",258),
+	Leg("Winston-Salem","Richmond",229),
+	Leg("Richmond","Washington",109),
+	Leg("Las Vegas","Denver",748),
+	Leg("Denver","Kansas City",605),
+	Leg("Kansas City","St. Louis",248),
+	Leg("Kansas City","Des Moines",383),
+	Leg("St. Louis","Louisville",261),
+	Leg("St. Louis","Indianapolis",242),
+	Leg("Louisville","Cincinnati",114),
+	Leg("Louisville","Indianapolis",100),
+	Leg("Louisville","Washington",608),
+	Leg("Washington","Philadelphia",136),
+	Leg("Philadelphia","New York",96.5),
+	Leg("Cincinnati","Columbus",107),
+	Leg("Sacramento","Reno",132),
+	Leg("Reno","Salt Lake City",518),
+	Leg("Salt Lake City","Ogden",38.2),
+	Leg("Ogden","Lincoln",877),
+	Leg("Lincoln","Omaha",53.5),
+	Leg("Omaha","Des Moines",140),
+	Leg("Omaha","Kansas City",189),
+	Leg("Des Moines","Iowa City",114),
+	Leg("Iowa City","Peoria",151),
+	Leg("Iowa City","Chicago",221),
+	Leg("Chicago","Cleveland",346),
+	Leg("Cleveland","Buffalo",189),
+	Leg("Buffalo","New York",373),
+	Leg("Peoria","Indianapolis",213),
+	Leg("Indianapolis","Columbus",175),
+	Leg("Columbus","Pittsburgh",185),
+	Leg("Pittsburgh","New York",371),
+};
+
+int main(){
+	
+	cout << "Programmer: Minjoo Kim\n";
+	cout << "Programmer's ID: 1581736\n";
+	cout << "File: " << __FILE__ << endl;
+	
+	const Route route1 = ShortestRoute::anyRoute("San Francisco", "New York");
+	route1.niceOutput(cout);
+	
+	const Route route2 = ShortestRoute::shortestRoute("San Francisco", "New York");
+	route2.niceOutput(cout);
+	
+}
+
+Route ShortestRoute::anyRoute(const char* const start, const char* const end) {
+	
+	for (int i = 0; i < (sizeof(allLags)/sizeof(*allLags)); i++) {
+		if (strcmp(allLags[i].endCity, end) == 0) {
+			if (strcmp(allLags[i].startCity, start) == 0) {
+				Route r(allLags[i]);
+				return r;
+			}
+			else {
+				Route x(ShortestRoute::anyRoute(start, allLags[i].startCity),allLags[i]);
+				return x;
+			}
+		}
+	}
+	throw "No route can be found";
+}
+
+const Route ShortestRoute::shortestRoute(const char* const start, const char* const end){
+	set<Route> routeSet;
+	
+	for (int i = 0; i < (sizeof(allLags)/sizeof(*allLags)); i++) {
+		if (strcmp(allLags[i].endCity, end) == 0) {
+			if (strcmp(allLags[i].startCity, start) == 0) {
+				Route r(allLags[i]);
+				return r;
+			}
+			else {
+				Route x(ShortestRoute::shortestRoute(start, allLags[i].startCity), allLags[i]);
+				routeSet.insert(x);
+			}
+			
+		}
+	}
+	if (routeSet.size() == 0) {
+		throw "No route can be found";
+	}
+	return *(routeSet.begin());
+}
+
+bool operator<(const Route& a, const Route& b)
+{
+	return a.dist < b.dist;
+}
+
+Leg& Leg::operator=(const Leg& copyThis){
+	Leg& host = *this;
+	if(this != &copyThis){
+		const_cast<const char*&>(host.startCity) = copyThis.startCity;
+		const_cast<const char*&>(host.endCity) = copyThis.endCity;
+		const_cast<double&>(host.dist) = copyThis.dist;
+	}
+	return host;
+}
+
+Route::Route(const Leg& leg) : dist(leg.getDist()){
+	legs.push_back(&leg);
+}
+
+Route::Route(const Route& route, const Leg& leg)
+: legs(route.legs), dist((strcmp(route.legs.back()->endCity, leg.startCity) == 0) ? route.dist+leg.dist : route.dist){
+	try{
+		if (strcmp(route.legs.back()->endCity, leg.startCity) != 0)
+			throw "Mismatch";
+		legs.push_back(&leg);
+	}
+	catch (const char* er)
+	{
+		cout << er << endl;
+	}
+	
+}
+
+void Route::niceOutput(ostream& os) const{
+	
+	cout << "Route: ";
+	for(int i = 0; i < legs.size(); i++){
+		cout << legs[i]->startCity;
+		
+		if(i != legs.size()-1) {
+			cout << " to ";
+		}
+		else{
+			cout << " to " << legs[i]->endCity;
+		}
+	}
+	cout << " " << getDistance() << " miles" << endl;
+}
+
+Route& Route::operator=(const Route& copyThis){
+	Route& host = *this;
+	if(this != &copyThis){
+		const_cast<double&>(host.dist) = copyThis.getDistance();
+		host.legs = copyThis.legs;
+	}
+	return host;
+}
+
+
+const Route ShortestRoute::anyRoute(const char* const start, const char* const end) 
+{
+  for(int i = 0; i < ShortestRoute::legSize; i++)
+  { // compare the endCityof the leg from the input parameter, end
+    if(strcmp(ShortestRoute::allLegs[i].endCity, end) == 0) 
+    {// compare the startCityof the leg from the input parameter, start
+      if(strcmp(ShortestRoute::allLegs[i].startCity, start) == 0) 
+      {
+       // hint: create the Route object with one Leg object
+
+       // return a Route object using the found leg
+      }
+      else 
+      {
+        // hint: create the Route object with one Route obj (from a recursive call) and one Leg obj
+
+        // the recursive call with the input parameters, start
+        // and the startCity of the found leg
+
+        // return the Route object
+      }
+    }
+  }
+  throw "Can't find a possible route!";
+}
+
+
+const Route ShortestRoute::shortestRoute(const char* const start, const char* const end) 
+{
+ set<Route> allRoutes;// auto sort
+  for(int i = 0; i < ShortestRoute::legSize; i++)
+  { // compare the endCityof the leg from the input parameter, end
+    if(strcmp(ShortestRoute::allLegs[i].endCity, end) == 0) 
+    {// compare the startCityof the leg from the input parameter, start
+      if(strcmp(ShortestRoute::allLegs[i].startCity, start) == 0) 
+      {
+        // Hint: create the Route object with one Leg
+
+        // create a route object using the found leg, insert it into the set
+
+      }
+      else 
+      {
+        // Hint: create the Route object with one Route obj (from a recursive call) and one Leg obj
+
+       // the recursive call with the input parameters, start
+        // and the startCity of the found leg
+
+        // inset the Route object into the set
+      }
+    }
+  }
+
+ if (!allRoutes.empty()) return *(allRoutes.begin());
+    throw "Can't find the shortest route!";
+}
