@@ -1,0 +1,37 @@
+//required constructor definition (not declaration)
+
+Square::Square(vector<string> tokens)
+{
+	//initializing side to 0
+	side=0;
+	//checking if tokens contain at least 2 values
+	if(tokens.size()>=2)
+	{
+		//creating a stringstream object from token at index 1
+		stringstream ss(tokens[1]);
+		//extracting float value from the string and assigning to side
+		ss>>side;
+	}
+
+}
+
+// Constructor for Sqaure objects taking vector of string as its argument
+
+square(vector<string> tokens){
+
+//tokens[1] contains the side dimension, as it is in string, it needs to be explicitly converted to float value
+
+side = std::atof(tokens[1]);
+
+// at index 0, shape of the object is specified
+
+shape = tokens[0];
+
+}
+
+
+
+Square::Square(const vector<string>& tokens)
+: side(tokens.size() > 1 ? atof(tokens[1].c_str()) : 0)
+{
+}

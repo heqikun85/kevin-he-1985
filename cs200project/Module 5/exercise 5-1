@@ -1,0 +1,24 @@
+// create a static array of 3 Leg objects using city names of your choosing.
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Leg
+{
+	const char* const startCity;
+	const char* const endCity;
+	const double distance;
+public:
+	Leg(const char* const, const char* const, const double);
+};
+
+int main()
+{
+	Leg legs[]=
+	{
+		Leg("Walnut Creek","Pleasant Hill",2.1),
+		Leg("Pleasant Hill","San Ramon",6.6),
+		Leg("Walnut Creek","San Ramon",8.8),
+	};
+}

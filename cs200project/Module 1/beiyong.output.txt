@@ -1,0 +1,3 @@
+SQUARE area=841 Perimeter=58
+344 invalid object
+SQUARE area=0 Perimeter=0

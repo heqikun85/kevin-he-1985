@@ -1,0 +1,386 @@
+// Programmer: Dhanush Patel
+// Programmer's ID: 1553428
+
+#include <fstream>
+#include <iostream>
+#include <iterator>
+#include <string>
+#include <sstream>
+#include <vector>
+using namespace std;
+
+#include <cmath>
+#include <cstdlib>
+
+struct Square{
+	double side;
+	void output(ostream&);
+};
+
+struct Rectangle{
+	double length;
+	double width;
+	void output(ostream&);
+};
+
+struct Circle{
+	double radius;
+	void output(ostream&);
+};
+
+struct Triangle{
+	double side;
+	void output(ostream&);
+};
+
+struct Cube{
+	double side;
+	void output(ostream&);
+};
+
+struct Box{
+	double length;
+	double width;
+	double height;
+	void output(ostream&);
+};
+
+struct Cylinder{
+	double radius;
+	double height;
+	void output(ostream&);
+};
+
+struct Prism{
+	double side;
+	double height;
+	void output(ostream&);
+};
+
+vector<string> parseString(string);
+void checkShape(vector<string>&, vector<void*>&, vector<string>&);
+void calcShape(vector<string>&, vector<void*>&, vector<string>&);
+ostream& roundingTwo(ostream&);
+ostream& roundingOff(ostream&);
+
+const double PI = 3.14159;
+
+int main(){
+	cout << "Programmer: Dhanush Patel\n";
+	cout << "Programmer's ID: 1553428\n";
+	cout << "File: " << __FILE__ << endl;
+
+	ifstream fin;
+	fin.open("Shapes.input.txt");
+	vector<void*> shapesBag;
+	vector<string> shapesTypeBag;
+
+	while (fin.good()){
+		string curLine;
+		getline(fin, curLine);
+		vector<string> lineElems = parseString(curLine);
+		if(lineElems.size() != 0){
+		 checkShape(lineElems, shapesBag, shapesTypeBag);
+		}
+	}
+
+	fin.close();
+
+	for (int i = 0; i < shapesBag.size(); i++){
+		if (shapesTypeBag[i] == "SQUARE"){
+			Square* ps = reinterpret_cast<Square*>(shapesBag[i]);
+			Square& rs = *ps;
+			rs.output(cout);
+		}
+		else if (shapesTypeBag[i] == "RECTANGLE"){
+			Rectangle* ps = reinterpret_cast<Rectangle*>(shapesBag[i]);
+			Rectangle& rs = *ps;
+			rs.output(cout);
+		}
+		else if (shapesTypeBag[i] == "CIRCLE"){
+			Circle* ps = reinterpret_cast<Circle*>(shapesBag[i]);
+			Circle& rs = *ps;
+			rs.output(cout);
+		}
+		else if (shapesTypeBag[i] == "TRIANGLE"){
+			Triangle* ps = reinterpret_cast<Triangle*>(shapesBag[i]);
+			Triangle& rs = *ps;
+			rs.output(cout);
+		}
+		else if (shapesTypeBag[i] == "CUBE"){
+			Cube* ps = reinterpret_cast<Cube*>(shapesBag[i]);
+			Cube& rs = *ps;
+			rs.output(cout);
+		}
+		else if (shapesTypeBag[i] == "BOX"){
+			Box* ps = reinterpret_cast<Box*>(shapesBag[i]);
+			Box& rs = *ps;
+			rs.output(cout);
+		}
+		else if (shapesTypeBag[i] == "CYLINDER"){
+			Cylinder* ps = reinterpret_cast<Cylinder*>(shapesBag[i]);
+			Cylinder& rs = *ps;
+			rs.output(cout);
+		}
+		else if (shapesTypeBag[i] == "PRISM"){
+			Prism* ps = reinterpret_cast<Prism*>(shapesBag[i]);
+			Prism& rs = *ps;
+			rs.output(cout);
+		}
+		else {
+			//this shouldn't happen
+		}
+	}
+
+	ofstream fout;
+	fout.open("Shapes.output.txt");
+
+	for (int i = 0; i < shapesBag.size(); i++){
+		 if (shapesTypeBag[i] == "SQUARE"){
+			 Square* ps = reinterpret_cast<Square*>(shapesBag[i]);
+			 Square& rs = *ps;
+			 rs.output(fout);
+		 }
+		 else if (shapesTypeBag[i] == "RECTANGLE"){
+			 Rectangle* ps = reinterpret_cast<Rectangle*>(shapesBag[i]);
+			 Rectangle& rs = *ps;
+			 rs.output(fout);
+		 }
+		 else if (shapesTypeBag[i] == "CIRCLE"){
+			 Circle* ps = reinterpret_cast<Circle*>(shapesBag[i]);
+			 Circle& rs = *ps;
+			 rs.output(fout);
+		 }
+		 else if (shapesTypeBag[i] == "TRIANGLE"){
+			 Triangle* ps = reinterpret_cast<Triangle*>(shapesBag[i]);
+			 Triangle& rs = *ps;
+			 rs.output(fout);
+		 }
+		 else if (shapesTypeBag[i] == "CUBE"){
+			 Cube* ps = reinterpret_cast<Cube*>(shapesBag[i]);
+			 Cube& rs = *ps;
+			 rs.output(fout);
+		 }
+		 else if (shapesTypeBag[i] == "BOX"){
+			 Box* ps = reinterpret_cast<Box*>(shapesBag[i]);
+			 Box& rs = *ps;
+			 rs.output(fout);
+		 }
+		 else if (shapesTypeBag[i] == "CYLINDER"){
+			 Cylinder* ps = reinterpret_cast<Cylinder*>(shapesBag[i]);
+			 Cylinder& rs = *ps;
+			 rs.output(fout);
+		 }
+		 else if (shapesTypeBag[i] == "PRISM"){
+			 Prism* ps = reinterpret_cast<Prism*>(shapesBag[i]);
+			 Prism& rs = *ps;
+			 rs.output(fout);
+		 }
+		 else {
+			 //this shouldn't happen
+		 }
+	 }
+
+	fout.close();
+
+	for (int i = 0; i < shapesBag.size(); i++){
+		 if (shapesTypeBag[i] == "SQUARE"){
+			 Square* ps = reinterpret_cast<Square*>(shapesBag[i]);
+			 delete ps;
+		 }
+		 else if (shapesTypeBag[i] == "RECTANGLE"){
+			 Rectangle* ps = reinterpret_cast<Rectangle*>(shapesBag[i]);
+			 delete ps;
+		 }
+		 else if (shapesTypeBag[i] == "CIRCLE"){
+			 Circle* ps = reinterpret_cast<Circle*>(shapesBag[i]);
+			 delete ps;
+		 }
+		 else if (shapesTypeBag[i] == "TRIANGLE"){
+			 Triangle* ps = reinterpret_cast<Triangle*>(shapesBag[i]);
+			 delete ps;
+		 }
+		 else if (shapesTypeBag[i] == "CUBE"){
+			 Cube* ps = reinterpret_cast<Cube*>(shapesBag[i]);
+			 delete ps;
+		 }
+		 else if (shapesTypeBag[i] == "BOX"){
+			 Box* ps = reinterpret_cast<Box*>(shapesBag[i]);
+			 delete ps;
+		 }
+		 else if (shapesTypeBag[i] == "CYLINDER"){
+			 Cylinder* ps = reinterpret_cast<Cylinder*>(shapesBag[i]);
+			 delete ps;
+		 }
+		 else if (shapesTypeBag[i] == "PRISM"){
+			 Prism* ps = reinterpret_cast<Prism*>(shapesBag[i]);
+			 delete ps;
+		 }
+		 else {
+			 //this shouldn't happen
+		 }
+	 }
+}
+
+void calcShape(vector<string>& lineWords, vector<void*>& shapesBag, vector<string>& shapesTypeBag){
+	string shapeType = lineWords.at(0);
+
+	if (shapeType == "SQUARE"){
+		Square* s = new Square;
+		s->side = lineWords.size() >= 2 ? atof(lineWords.at(1).c_str()) : 0;
+		shapesBag.push_back(s);
+		shapesTypeBag.push_back("SQUARE");
+	}
+	else if (shapeType=="RECTANGLE"){
+		Rectangle* r = new Rectangle;
+		r->length = lineWords.size() >= 2 ? atof(lineWords.at(1).c_str()) : 0;
+		r->width = lineWords.size() >= 3 ? atof(lineWords.at(2).c_str()) : 0;
+		shapesBag.push_back(r);
+		shapesTypeBag.push_back("RECTANGLE");
+	}
+	else if (shapeType == "CIRCLE"){
+		Circle* c = new Circle;
+		c->radius = lineWords.size() >= 2 ? atof(lineWords.at(1).c_str()) : 0;
+		shapesBag.push_back(c);
+		shapesTypeBag.push_back("CIRCLE");
+	}
+	else if (shapeType == "TRIANGLE"){
+		Triangle* t = new Triangle;
+		t->side = lineWords.size() >= 2 ? atof(lineWords.at(1).c_str()) : 0;
+		shapesBag.push_back(t);
+		shapesTypeBag.push_back("TRIANGLE");
+	}
+	else if (shapeType == "CUBE"){
+		Cube* c = new Cube;
+		c->side = lineWords.size() >= 2 ? atof(lineWords.at(1).c_str()) : 0;
+		shapesBag.push_back(c);
+		shapesTypeBag.push_back("CUBE");
+	}
+	else if (shapeType == "BOX"){
+		Box* b = new Box;
+		b->length = lineWords.size() >= 2 ? atof(lineWords.at(1).c_str()) : 0;
+		b->width = lineWords.size() >= 3 ? atof(lineWords.at(2).c_str()) : 0;
+		b->height = lineWords.size() >= 4 ? atof(lineWords.at(3).c_str()) : 0;
+		shapesBag.push_back(b);
+		shapesTypeBag.push_back("BOX");
+	}
+	else if (shapeType == "CYLINDER"){
+		Cylinder* c = new Cylinder;
+		c->radius = lineWords.size() >= 2 ? atof(lineWords.at(1).c_str()) : 0;
+		c->height = lineWords.size() >= 3 ? atof(lineWords.at(2).c_str()) : 0;
+		shapesBag.push_back(c);
+		shapesTypeBag.push_back("CYLINDER");
+	}
+	else if (shapeType == "PRISM"){
+		Prism* p = new Prism;
+		p->side = lineWords.size() >= 2 ? atof(lineWords.at(1).c_str()) : 0;
+		p->height = lineWords.size() >= 3 ? atof(lineWords.at(2).c_str()) : 0;
+		shapesBag.push_back(p);
+		shapesTypeBag.push_back("PRISM");
+	}
+	else {
+		//end of file, do nothing
+	}
+}
+
+void Square::output(ostream& os){
+		double area = side * side;
+		double perim = side * 4.0;
+		os << "SQUARE side=" << side;
+		os << roundingTwo << " area=" << area << " perimeter=" << perim << endl;
+		os << roundingOff;
+}
+
+void Rectangle::output(ostream& os){
+		double area = length * width;
+		double perim = (2.0 * length) + (2.0 * width);
+		os << "RECTANGLE length=" << length << " width=" << width;
+		os << roundingTwo << " area=" << area << " perimeter=" << perim << endl;
+		os << roundingOff;
+}
+
+void Circle::output(ostream& os){
+		double area = PI * radius * radius;
+		double perim = 2 * PI * radius;
+		os << "CIRCLE radius=" << radius;
+		os << roundingTwo << " area=" << area << " perimeter=" << perim << endl;
+		os << roundingOff;
+}
+
+void Triangle::output(ostream& os){
+		double area = (pow(3.0, 0.5) / 4.0) * pow(side, 2.0);
+		double perim = side * 3.0;
+		os << "TRIANGLE side=" << side;
+		os << roundingTwo << " area=" << area << " perimeter=" << perim << endl;
+		os << roundingOff;
+}
+
+void Cube::output(ostream& os){
+		double surfaceArea = 6.0 * pow(side, 2.0);
+		double volume = pow(side, 3.0);
+		os << "CUBE side=" << side;
+		os << roundingTwo << " surface area=" << surfaceArea << " volume=" << volume << endl;
+		os << roundingOff;
+}
+
+void Box::output(ostream& os){
+		double surfaceArea = 2.0 * ((length * width) + (length * height) + (width * height));
+		double volume = length * width * height;
+		os << "BOX length=" << length << " width=" << width << " height=" << height;
+		os << roundingTwo << " surface area=" << surfaceArea << " volume=" << volume << endl;
+		os << roundingOff;
+}
+
+void Cylinder::output(ostream& os){
+		double surfaceArea = (2.0 * (PI * pow(radius, 2.0))) + (2.0 * PI * radius * height);
+		double volume = PI * pow(radius, 2.0) * height;
+		os << "CYLINDER radius=" << radius << " height=" << height;
+		os << roundingTwo << " surface area=" << surfaceArea << " volume=" << volume << endl;
+		os << roundingOff;
+}
+
+void Prism::output(ostream& os){
+		double surfaceArea = (2.0 * ((pow(3.0, 0.5) / 4.0) * pow(side, 2.0) ) ) + (3.0 * (side * height));
+		double volume = ((pow(3.0, 0.5) / 4.0) * pow(side, 2.0)) * height;
+		os << "PRISM side=" << side << " height=" << height;
+		os << roundingTwo << " surface area=" << surfaceArea << " volume=" << volume << endl;
+		os << roundingOff;
+}
+
+void checkShape(vector<string>& lineWords, vector<void*>& shapesBag, vector<string>& shapesTypeBag){
+	string validShapes[] = {"SQUARE", "RECTANGLE", "CIRCLE", "TRIANGLE", "CUBE", "BOX", "CYLINDER", "PRISM"};
+	bool valShape = false;
+
+	for(auto& i : validShapes){
+		if(lineWords.at(0) == i){
+			valShape = true;
+		}
+	}
+
+	if(valShape == true){
+		calcShape(lineWords, shapesBag, shapesTypeBag);
+	}
+	else{
+		if(lineWords.at(0)!="EOF"){
+			cout << lineWords.at(0) << " invalid shape" << endl;
+		}
+	}
+}
+
+ostream& roundingTwo(ostream& out){
+	out.setf(ios::fixed);
+	out.precision(2);
+	return out;
+}
+
+ostream& roundingOff(ostream& out){
+	out.unsetf(ios::fixed);
+	out.precision(6);
+	return out;
+}
+
+vector<string> parseString(string str){
+	stringstream s(str);
+	istream_iterator<string> begin(s), end;
+	return vector<string>(begin, end);
+}
