@@ -1,0 +1,30 @@
+#ifndef BUILDING_H
+#define BUILDING_H
+
+#include "Floor.h"
+#include "Elevator.h"
+
+struct Building
+{
+  static Floor floors[];
+  static Elevator elevators[];
+  static const int FLOORS;
+  static const int ELEVATORS;
+
+  // helper functions
+  static void getDifferentInts(int&, int&);
+  static int getPoisson(double);
+  static void placeNewRiders(double);
+  
+  // actions
+  static void action(double); // the main "action function"
+  static bool openDoorToDisembarkRider(int); // step 1 of 9
+  static bool disembarkRider(int); //add for assignment 8
+  static bool boardRider(int);
+  static bool waitingForMoreRiders(int); //add for A 12
+  static bool doneWaitingMove(int); //add for A 12
+  static bool moveableMove(int);
+  static bool setIdleElevatorInMotion(int); 
+  static bool sendIdleElevatorToCallingFloor(int);
+};
+#endif
